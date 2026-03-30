@@ -1,0 +1,229 @@
+
+{
+  "project_metadata": {
+    "project_name": "Context-Aware Smart Home NLG",
+    "version": "1.0",
+    "home_id": "SmartHome_v1"
+  },
+
+  "iot_data": {
+    "locations": [
+      "Kitchen",
+      "Living_Room",
+      "Bedroom",
+      "Bathroom",
+      "Study",
+      "Garage",
+      "Hallway",
+      "Porch",
+      "Garden"
+    ],
+
+    "registry": [
+      {"deviceName": "Kitchen_Lights", "location": "Kitchen", "type": "Light", "status": "OFF", "capabilities": ["ON", "OFF", "DIM"]},
+      {"deviceName": "Living_Room_TV", "location": "Living_Room", "type": "Media", "status": "ON", "capabilities": ["ON", "OFF", "MUTE", "UNMUTE"]},
+      {"deviceName": "Bedroom_AC", "location": "Bedroom", "type": "Climate", "status": "OFF", "capabilities": ["ON", "OFF", "SET_TEMP"]},
+      {"deviceName": "Thermostat", "location": "Living_Room", "type": "Climate", "status": "ON", "capabilities": ["SET_TEMP"]},
+      {"deviceName": "Garage_Door", "location": "Garage", "type": "Entry", "status": "CLOSED", "capabilities": ["OPEN", "CLOSE"]},
+      {"deviceName": "Front_Door", "location": "Hallway", "type": "Entry", "status": "LOCKED", "capabilities": ["LOCK", "UNLOCK"]},
+      {"deviceName": "Blinds", "location": "Living_Room", "type": "Window", "status": "OPEN", "capabilities": ["OPEN", "CLOSE"]},
+      {"deviceName": "Bedroom_Heater", "location": "Bedroom", "type": "Climate", "status": "OFF", "capabilities": ["ON", "OFF"]},
+      {"deviceName": "Smart_Vacuum", "location": "Hallway", "type": "Cleaning", "status": "DOCKED", "capabilities": ["START", "STOP", "DOCK"]},
+      {"deviceName": "Security_System", "location": "Global", "type": "Security", "status": "DISARMED", "capabilities": ["ARM", "DISARM"]},
+      {"deviceName": "Oven", "location": "Kitchen", "type": "Appliance", "status": "OFF", "max_temp": 250, "capabilities": ["ON", "OFF", "SET_TEMP"]},
+      {"deviceName": "Sprinkler", "location": "Garden", "type": "Outdoor", "status": "OFF", "capabilities": ["ON", "OFF"]},
+      {"deviceName": "Coffee_Maker", "location": "Kitchen", "type": "Appliance", "status": "READY", "capabilities": ["ON", "OFF", "START"]},
+      {"deviceName": "Bedroom_Fan", "location": "Bedroom", "type": "Fan", "status": "OFF", "capabilities": ["ON", "OFF"]},
+      {"deviceName": "Porch_Light", "location": "Porch", "type": "Light", "status": "OFF", "capabilities": ["ON", "OFF"]}
+    ],
+
+    "sensors": [
+      {"sensorName": "Rain_Sensor", "state": false},
+      {"sensorName": "Motion_Sensor", "state": false},
+      {"sensorName": "Temperature_Sensor", "value": 24}
+    ]
+  },
+
+  "categories": [
+      {
+        "category_id": "C1",
+        "category": "Single Intent (Simple)",
+        "description": "Immediate single-device actions with zero temporal or logic constraints.",
+        "examples": [
+          {"instruction": "Turn on the kitchen lights.", "ideal_output": "[Kitchen_Lights] | [Action: ON] | [Execution: Single]"},
+          {"instruction": "Close the garage door.", "ideal_output": "[Garage_Door] | [Action: CLOSE] | [Execution: Single]"},
+          {"instruction": "Set the thermostat to 22 degrees.", "ideal_output": "[Thermostat] | [Action: SET_TEMP] | [Value: 22] | [Execution: Single]"},
+          {"instruction": "Turn off the bedroom fan.", "ideal_output": "[Bedroom_Fan] | [Action: OFF] | [Execution: Single]"},
+          {"instruction": "Open the blinds.", "ideal_output": "[Blinds] | [Action: OPEN] | [Execution: Single]"},
+          {"instruction": "Switch on the coffee maker.", "ideal_output": "[Coffee_Maker] | [Action: ON] | [Execution: Single]"},
+          {"instruction": "Lock the front door.", "ideal_output": "[Front_Door] | [Action: LOCK] | [Execution: Single]"},
+          {"instruction": "Is the oven on?", "ideal_output": "[Oven] | [Action: QUERY_STATUS] | [Execution: Single]"},
+          {"instruction": "Unmute the TV.", "ideal_output": "[Living_Room_TV] | [Action: UNMUTE] | [Execution: Single]"},
+          {"instruction": "Start the vacuum.", "ideal_output": "[Smart_Vacuum] | [Action: START] | [Execution: Single]"}
+        ]
+      },
+
+      {
+        "category_id": "C2",
+        "category": "Multi-Device (Parallel)",
+        "description": "Coordinating multiple devices in a single utterance.",
+        "examples": [
+          {"instruction": "Turn off the kitchen lights and the TV.", "ideal_output": "[Kitchen_Lights, Living_Room_TV] | [Action: OFF] | [Execution: Parallel]"},
+          {"instruction": "Open the garage door and turn on the bedroom AC.", "ideal_output": "[Garage_Door, Bedroom_AC] | [Action: OPEN, ON] | [Execution: Parallel]"},
+          {"instruction": "Lock the front door and arm the security system.", "ideal_output": "[Front_Door, Security_System] | [Action: LOCK, ARM] | [Execution: Parallel]"},
+          {"instruction": "Turn off the heater and the fan.", "ideal_output": "[Bedroom_Heater, Bedroom_Fan] | [Action: OFF] | [Execution: Parallel]"},
+          {"instruction": "Start the vacuum and close the blinds.", "ideal_output": "[Smart_Vacuum, Blinds] | [Action: START, CLOSE] | [Execution: Parallel]"},
+          {"instruction": "Turn on the porch light and kitchen lights.", "ideal_output": "[Porch_Light, Kitchen_Lights] | [Action: ON] | [Execution: Parallel]"},
+          {"instruction": "Disarm security and unlock the front door.", "ideal_output": "[Security_System, Front_Door] | [Action: DISARM, UNLOCK] | [Execution: Parallel]"},
+          {"instruction": "Turn off the oven and the coffee maker.", "ideal_output": "[Oven, Coffee_Maker] | [Action: OFF] | [Execution: Parallel]"},
+          {"instruction": "Set thermostat to 20 and turn on AC.", "ideal_output": "[Thermostat, Bedroom_AC] | [Action: SET_TEMP, ON] | [Execution: Parallel]"},
+          {"instruction": "Close the garage door and turn off porch light.", "ideal_output": "[Garage_Door, Porch_Light] | [Action: CLOSE, OFF] | [Execution: Parallel]"}
+        ]
+      },
+
+      {
+        "category_id": "C3",
+        "category": "Temporal Logic",
+        "description": "Commands requiring time grounding or delay.",
+        "examples": [
+          {"instruction": "Turn on the bedroom AC in 10 minutes.", "ideal_output": "[Bedroom_AC] | [Action: ON] | [Temporal: Delay_600s]"},
+          {"instruction": "Turn off the porch light at midnight.", "ideal_output": "[Porch_Light] | [Action: OFF] | [Temporal: Time_00:00]"},
+          {"instruction": "Switch off the heater after one hour.", "ideal_output": "[Bedroom_Heater] | [Action: OFF] | [Temporal: Delay_3600s]"},
+          {"instruction": "Start the coffee maker in 5 minutes.", "ideal_output": "[Coffee_Maker] | [Action: START] | [Temporal: Delay_300s]"},
+          {"instruction": "Stop the vacuum in 2 minutes.", "ideal_output": "[Smart_Vacuum] | [Action: STOP] | [Temporal: Delay_120s]"},
+          {"instruction": "Turn on porch light at 7 PM.", "ideal_output": "[Porch_Light] | [Action: ON] | [Temporal: Time_19:00]"},
+          {"instruction": "Turn off AC tomorrow morning.", "ideal_output": "[Bedroom_AC] | [Action: OFF] | [Temporal: Day_Tomorrow_Morning]"},
+          {"instruction": "Lock the door in 30 seconds.", "ideal_output": "[Front_Door] | [Action: LOCK] | [Temporal: Delay_30s]"},
+          {"instruction": "Turn on the fan after 15 minutes.", "ideal_output": "[Bedroom_Fan] | [Action: ON] | [Temporal: Delay_900s]"},
+          {"instruction": "Close blinds at sunset.", "ideal_output": "[Blinds] | [Action: CLOSE] | [Temporal: Event_Sunset]"}
+        ]
+      },
+
+      {
+        "category_id": "C4",
+        "category": "Negative Constraints",
+        "description": "Explicit negation and exclusion logic.",
+        "examples": [
+          {"instruction": "Do not turn on the heater.", "ideal_output": "[Bedroom_Heater] | [Action: IGNORE]"},
+          {"instruction": "Turn off all lights except the kitchen.", "ideal_output": "[Kitchen_Lights, Porch_Light] | [Action: OFF_EXCEPT_Kitchen_Lights]"},
+          {"instruction": "Don't start the vacuum.", "ideal_output": "[Smart_Vacuum] | [Action: IGNORE]"},
+          {"instruction": "Never unlock the front door at night.", "ideal_output": "[Front_Door] | [Action: IGNORE] | [Logic: Night_Restriction]"},
+          {"instruction": "Do not open the garage door.", "ideal_output": "[Garage_Door] | [Action: IGNORE]"},
+          {"instruction": "Turn off everything but the AC.", "ideal_output": "[Bedroom_AC] | [Action: OFF_EXCEPT_Bedroom_AC]"},
+          {"instruction": "Don't mute the TV.", "ideal_output": "[Living_Room_TV] | [Action: IGNORE]"},
+          {"instruction": "Lock all doors except the front door.", "ideal_output": "[Garage_Door] | [Action: LOCK_EXCEPT_Front_Door]"},
+          {"instruction": "Do not switch off the oven.", "ideal_output": "[Oven] | [Action: IGNORE]"},
+          {"instruction": "Keep the porch light on, don't turn it off.", "ideal_output": "[Porch_Light] | [Action: IGNORE_OFF]"}
+        ]
+      },
+
+      {
+        "category_id": "C5",
+        "category": "Conditional Logic",
+        "description": "Commands dependent on sensor conditions.",
+        "examples": [
+          {"instruction": "If it rains, turn off the sprinkler.", "ideal_output": "[Sprinkler] | [Action: OFF] | [Condition: Rain_Sensor == true]"},
+          {"instruction": "Turn on AC if temperature exceeds 30.", "ideal_output": "[Bedroom_AC] | [Action: ON] | [Condition: Temperature_Sensor > 30]"},
+          {"instruction": "If motion detected, turn on porch light.", "ideal_output": "[Porch_Light] | [Action: ON] | [Condition: Motion_Sensor == true]"},
+          {"instruction": "Lock door if motion detected.", "ideal_output": "[Front_Door] | [Action: LOCK] | [Condition: Motion_Sensor == true]"},
+          {"instruction": "Turn off heater if temperature rises above 25.", "ideal_output": "[Bedroom_Heater] | [Action: OFF] | [Condition: Temperature_Sensor > 25]"},
+          {"instruction": "Start vacuum if motion stops.", "ideal_output": "[Smart_Vacuum] | [Action: START] | [Condition: Motion_Sensor == false]"},
+          {"instruction": "Turn on lights if it gets dark.", "ideal_output": "[Kitchen_Lights] | [Action: ON] | [Condition: Low_Light]"},
+          {"instruction": "Disarm security if door unlocked.", "ideal_output": "[Security_System] | [Action: DISARM] | [Condition: Front_Door == UNLOCKED]"},
+          {"instruction": "Turn off AC if window opened.", "ideal_output": "[Bedroom_AC] | [Action: OFF] | [Condition: Window_Open]"},
+          {"instruction": "Turn on fan if temperature above 28.", "ideal_output": "[Bedroom_Fan] | [Action: ON] | [Condition: Temperature_Sensor > 28]"}
+        ]
+      },
+
+      {
+        "category_id": "C6",
+        "category": "Anaphora (Contextual)",
+        "description": "Context-based reference resolution.",
+        "examples": [
+          {"instruction": "Turn on the TV. Now mute it.", "ideal_output": "[Living_Room_TV] | [Action: MUTE]"},
+          {"instruction": "Open the garage door. Close it.", "ideal_output": "[Garage_Door] | [Action: CLOSE]"},
+          {"instruction": "Start the vacuum. Dock it.", "ideal_output": "[Smart_Vacuum] | [Action: DOCK]"},
+          {"instruction": "Turn on heater. Turn it off.", "ideal_output": "[Bedroom_Heater] | [Action: OFF]"},
+          {"instruction": "Unlock the door. Lock it.", "ideal_output": "[Front_Door] | [Action: LOCK]"},
+          {"instruction": "Switch on porch light. Turn it off.", "ideal_output": "[Porch_Light] | [Action: OFF]"},
+          {"instruction": "Set AC to 20. Keep it there.", "ideal_output": "[Bedroom_AC] | [Action: HOLD]"},
+          {"instruction": "Start coffee maker. Stop it.", "ideal_output": "[Coffee_Maker] | [Action: OFF]"},
+          {"instruction": "Turn on kitchen lights. Dim them.", "ideal_output": "[Kitchen_Lights] | [Action: DIM]"},
+          {"instruction": "Arm security. Disarm it.", "ideal_output": "[Security_System] | [Action: DISARM]"}
+        ]
+      },
+
+      {
+        "category_id": "C7",
+        "category": "Ambiguity Resolution",
+        "description": "Vague commands requiring clarification.",
+        "examples": [
+          {"instruction": "Turn it on.", "ideal_output": "[Unknown] | [Action: CLARIFY]"},
+          {"instruction": "Make it warmer.", "ideal_output": "[Unknown] | [Action: CLARIFY]"},
+          {"instruction": "Switch the light.", "ideal_output": "[Unknown] | [Action: CLARIFY]"},
+          {"instruction": "Is it open?", "ideal_output": "[Unknown] | [Action: CLARIFY]"},
+          {"instruction": "Lower it.", "ideal_output": "[Unknown] | [Action: CLARIFY]"},
+          {"instruction": "Start it.", "ideal_output": "[Unknown] | [Action: CLARIFY]"},
+          {"instruction": "Turn it up.", "ideal_output": "[Unknown] | [Action: CLARIFY]"},
+          {"instruction": "Stop that.", "ideal_output": "[Unknown] | [Action: CLARIFY]"},
+          {"instruction": "Close it.", "ideal_output": "[Unknown] | [Action: CLARIFY]"},
+          {"instruction": "Play something.", "ideal_output": "[Unknown] | [Action: CLARIFY]"}
+        ]
+      },
+
+      {
+        "category_id": "C8",
+        "category": "Conflicting Commands",
+        "description": "Contradictory instructions.",
+        "examples": [
+          {"instruction": "Turn on heater and turn it off.", "ideal_output": "[Bedroom_Heater] | [Action: ABORT]"},
+          {"instruction": "Open garage and keep it closed.", "ideal_output": "[Garage_Door] | [Action: ABORT]"},
+          {"instruction": "Lock and unlock the door.", "ideal_output": "[Front_Door] | [Action: ABORT]"},
+          {"instruction": "Start and stop vacuum.", "ideal_output": "[Smart_Vacuum] | [Action: ABORT]"},
+          {"instruction": "Mute and unmute TV.", "ideal_output": "[Living_Room_TV] | [Action: ABORT]"},
+          {"instruction": "Turn AC on and off immediately.", "ideal_output": "[Bedroom_AC] | [Action: ABORT]"},
+          {"instruction": "Arm and disarm security.", "ideal_output": "[Security_System] | [Action: ABORT]"},
+          {"instruction": "Open and close blinds at same time.", "ideal_output": "[Blinds] | [Action: ABORT]"},
+          {"instruction": "Switch fan on and off.", "ideal_output": "[Bedroom_Fan] | [Action: ABORT]"},
+          {"instruction": "Turn oven on and off.", "ideal_output": "[Oven] | [Action: ABORT]"}
+        ]
+      },
+
+      {
+        "category_id": "C9",
+        "category": "Sequential Logic",
+        "description": "Ordered multi-step execution.",
+        "examples": [
+          {"instruction": "First lock the door, then arm security.", "ideal_output": "[Front_Door, Security_System] | [Action: LOCK -> ARM]"},
+          {"instruction": "Turn on AC, then turn on fan.", "ideal_output": "[Bedroom_AC, Bedroom_Fan] | [Action: ON -> ON]"},
+          {"instruction": "Open garage, then start vacuum.", "ideal_output": "[Garage_Door, Smart_Vacuum] | [Action: OPEN -> START]"},
+          {"instruction": "Turn on coffee maker, then turn it off.", "ideal_output": "[Coffee_Maker] | [Action: ON -> OFF]"},
+          {"instruction": "Unlock door and then lock it.", "ideal_output": "[Front_Door] | [Action: UNLOCK -> LOCK]"},
+          {"instruction": "Switch on lights and then dim them.", "ideal_output": "[Kitchen_Lights] | [Action: ON -> DIM]"},
+          {"instruction": "Disarm security then unlock door.", "ideal_output": "[Security_System, Front_Door] | [Action: DISARM -> UNLOCK]"},
+          {"instruction": "Turn oven on then set temperature.", "ideal_output": "[Oven] | [Action: ON -> SET_TEMP]"},
+          {"instruction": "Start vacuum then dock it.", "ideal_output": "[Smart_Vacuum] | [Action: START -> DOCK]"},
+          {"instruction": "Turn on porch light then turn it off.", "ideal_output": "[Porch_Light] | [Action: ON -> OFF]"}
+        ]
+      },
+
+      {
+        "category_id": "C10",
+        "category": "Error / Edge Cases",
+        "description": "Invalid or unsafe commands.",
+        "examples": [
+          {"instruction": "Set oven to 500 degrees.", "ideal_output": "[Oven] | [Action: ERROR] | [Logic: Out_of_Range]"},
+          {"instruction": "Turn on the sun.", "ideal_output": "[Unknown] | [Action: ERROR]"},
+          {"instruction": "Heat the garage door.", "ideal_output": "[Garage_Door] | [Action: ERROR]"},
+          {"instruction": "Make the lights taste like coffee.", "ideal_output": "[Kitchen_Lights] | [Action: ERROR]"},
+          {"instruction": "Lock the vacuum.", "ideal_output": "[Smart_Vacuum] | [Action: ERROR]"},
+          {"instruction": "Set thermostat to -50 degrees.", "ideal_output": "[Thermostat] | [Action: ERROR]"},
+          {"instruction": "Open the temperature sensor.", "ideal_output": "[Temperature_Sensor] | [Action: ERROR]"},
+          {"instruction": "Cook security system.", "ideal_output": "[Security_System] | [Action: ERROR]"},
+          {"instruction": "Turn AC to 200 degrees.", "ideal_output": "[Bedroom_AC] | [Action: ERROR]"},
+          {"instruction": "Water the TV.", "ideal_output": "[Living_Room_TV] | [Action: ERROR]"}
+        ]
+      }
+    ]
+}
+
